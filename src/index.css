@@ -48,3 +48,16 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+:root {
+  --dark-color: #121212;
+  --grey-color: #1c1c1c;
+  --light-color: #fff;
+  --game-color: #e60012;
+}
+
+body {
+  font-family: "Jersey 20", serif;
+  color: var(--light-color);
+  background-color: var(--dark-color);
+}
