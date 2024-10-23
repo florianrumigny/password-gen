@@ -26,19 +26,13 @@ export const generateStrongPassword = ({
 
   if (!chars) return "";
 
-  console.log(chars);
-
   const array = new Uint32Array(length);
   crypto.getRandomValues(array);
-
-  console.log(array);
 
   let password = "";
   for (let i = 0; i < length; i++) {
     password += chars[array[i] % chars.length];
   }
-
-  console.log(password);
 
   return password;
 };
