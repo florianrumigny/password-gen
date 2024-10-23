@@ -52,6 +52,7 @@ h6 {
 :root {
   --dark-color: #121212;
   --grey-color: #1c1c1c;
+  --light-grey-color: #272727;
   --light-color: #fff;
   --game-color: #e60012;
 }

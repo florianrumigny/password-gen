@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
-import { Heart } from "lucide-react";
+import { Copy, Heart } from "lucide-react";
+import { generateStrongPassword } from "./utils/generatePassword";
 
 function App() {
   const [passwordLength, setPasswordLength] = useState<number>(1);
@@ -8,15 +9,36 @@ function App() {
   const [isLowercase, setIsLowercase] = useState<boolean>(false);
   const [isNumPassword, setIsNumPassword] = useState<boolean>(false);
   const [isSymbol, setIsSymbol] = useState<boolean>(false);
+  const [isGenerated, setIsGenerated] = useState<boolean>(false);
+  const [generatePassword, setGeneratedPassword] = useState<string>("");
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordLength(Number(e.target.value));
   };
 
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const generated = generateStrongPassword({
+      length: passwordLength,
+      uppercase: isUppercase,
+      lowercase: isLowercase,
+      number: isNumPassword,
+      symbol: isSymbol,
+    });
+    setGeneratedPassword(generated);
+    setIsGenerated(true);
+  };
+
   return (
     <div className="container">
       <h1>Password Generator</h1>
-      <form>
+      {isGenerated && (
+        <div className="container-password">
+          <p>{generatePassword}</p>
+          <Copy size={15} color="#fff" />
+        </div>
+      )}
+      <form onSubmit={handleSubmit}>
         <label className="container-length">
           Length Password: {passwordLength}
           <input
@@ -60,7 +82,10 @@ function App() {
           />
           Include Symbols
         </label>
-        <button>GENERATE</button>
+        <button disabled={passwordLength < 10}>GENERATE</button>
+        {passwordLength < 10 && (
+          <p className="error-length">A short password is a bad password.</p>
+        )}
       </form>
       <div className="container-strength">
         <p>STRENGTH</p>
