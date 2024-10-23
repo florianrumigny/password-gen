@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { Heart } from "lucide-react";
+import { Heart, Lock } from "lucide-react";
 import { generateStrongPassword } from "./utils/generatePassword";
 import CopyTo from "./components/CopyTo/CopyTo";
 
@@ -64,96 +64,103 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <h1>Password Generator</h1>
+    <div className="main">
+      <h1 className="main-h1">Password Generator</h1>
+
       {isGenerated && (
         <div className="container-password">
           <p>{generatePassword}</p>
           <CopyTo handleCopy={() => handleCopy(generatePassword)} />
         </div>
       )}
-      <form onSubmit={handleSubmit}>
-        <label className="container-length">
-          Length Password: {passwordLength}
-          <input
-            type="range"
-            min="1"
-            max="64"
-            step="1"
-            value={passwordLength}
-            onChange={handleChangeInput}
-          />
-        </label>
-        <label className="container-checkbox uppercase">
-          <input
-            type="checkbox"
-            checked={isUppercase}
-            onChange={(e) => setIsUppercase(e.target.checked)}
-          />
-          Include Uppercase Letters
-        </label>
-        <label className="container-checkbox lowercase">
-          <input
-            type="checkbox"
-            checked={isLowercase}
-            onChange={(e) => setIsLowercase(e.target.checked)}
-          />
-          Include Lowercase Letters
-        </label>
-        <label className="container-checkbox numbers">
-          <input
-            type="checkbox"
-            checked={isNumPassword}
-            onChange={(e) => setIsNumPassword(e.target.checked)}
-          />
-          Include Numbers
-        </label>
-        <label className="container-checkbox symbols">
-          <input
-            type="checkbox"
-            checked={isSymbol}
-            onChange={(e) => setIsSymbol(e.target.checked)}
-          />
-          Include Symbols
-        </label>
-        <button disabled={!validateForm()}>GENERATE</button>
-        {passwordLength < 10 && (
-          <p className="error-length">A short password is a bad password.</p>
-        )}
-      </form>
-      <div className="container-strength">
-        <p>STRENGTH</p>
-        <div className="container-difficulty">
-          <p>{strengthPassword()}</p>
-          <div className="container-heart">
-            <Heart
-              size={15}
-              color="#fff"
-              fill={
-                strengthPassword() === "Easy" ||
-                strengthPassword() === "Medium" ||
-                strengthPassword() === "Strong"
-                  ? "#e60012"
-                  : ""
-              }
+
+      <div className="container">
+        <form onSubmit={handleSubmit}>
+          <label className="container-length">
+            Length Password: {passwordLength}
+            <input
+              type="range"
+              min="1"
+              max="64"
+              step="1"
+              value={passwordLength}
+              onChange={handleChangeInput}
             />
-            <Heart
-              size={15}
-              color="#fff"
-              fill={
-                strengthPassword() === "Medium" ||
-                strengthPassword() === "Strong"
-                  ? "#e60012"
-                  : ""
-              }
+          </label>
+          <label className="container-checkbox uppercase">
+            <input
+              type="checkbox"
+              checked={isUppercase}
+              onChange={(e) => setIsUppercase(e.target.checked)}
             />
-            <Heart
-              size={15}
-              color="#fff"
-              fill={strengthPassword() === "Strong" ? "#e60012" : ""}
+            Include Uppercase Letters
+          </label>
+          <label className="container-checkbox lowercase">
+            <input
+              type="checkbox"
+              checked={isLowercase}
+              onChange={(e) => setIsLowercase(e.target.checked)}
             />
+            Include Lowercase Letters
+          </label>
+          <label className="container-checkbox numbers">
+            <input
+              type="checkbox"
+              checked={isNumPassword}
+              onChange={(e) => setIsNumPassword(e.target.checked)}
+            />
+            Include Numbers
+          </label>
+          <label className="container-checkbox symbols">
+            <input
+              type="checkbox"
+              checked={isSymbol}
+              onChange={(e) => setIsSymbol(e.target.checked)}
+            />
+            Include Symbols
+          </label>
+          <div className="container-strength">
+            <p>STRENGTH</p>
+            <div className="container-difficulty">
+              <p>{strengthPassword()}</p>
+              <div className="container-heart">
+                <Heart
+                  size={15}
+                  color="#fff"
+                  fill={
+                    strengthPassword() === "Easy" ||
+                    strengthPassword() === "Medium" ||
+                    strengthPassword() === "Strong"
+                      ? "#e60012"
+                      : ""
+                  }
+                />
+                <Heart
+                  size={15}
+                  color="#fff"
+                  fill={
+                    strengthPassword() === "Medium" ||
+                    strengthPassword() === "Strong"
+                      ? "#e60012"
+                      : ""
+                  }
+                />
+                <Heart
+                  size={15}
+                  color="#fff"
+                  fill={strengthPassword() === "Strong" ? "#e60012" : ""}
+                />
+              </div>
+            </div>
           </div>
-        </div>
+          <button disabled={!validateForm()} className="btn">
+            GENERATE
+            <Lock size={15} />
+          </button>
+          {passwordLength < 10 && (
+            <p className="error-length">A short password is a bad password.</p>
+          )}
+        </form>
       </div>
     </div>
   );

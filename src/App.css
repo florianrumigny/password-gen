@@ -1,11 +1,19 @@
+.main {
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .container {
-  background-color: var(--light-grey-color);
-  max-width: 500px;
-  margin: 0 auto;
+  background-color: var(--grey-color);
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 1rem;
+  width: 50%;
 }
 
 .container-length {
@@ -21,11 +29,12 @@
 }
 
 .container-strength {
-  background-color: var(--grey-color);
+  background-color: var(--dark-color);
   margin-top: 1rem;
   padding: 1rem;
   display: flex;
   justify-content: space-between;
+  font-size: 1.2rem;
 }
 
 .container-difficulty {
@@ -39,6 +48,7 @@
 }
 
 .container-password {
+  width: 50%;
   background-color: var(--grey-color);
   margin-top: 1rem;
   padding: 1rem;
@@ -50,6 +60,32 @@
   font-size: 1.5rem;
 }
 
+.btn {
+  border: none;
+  background-color: var(--second-color);
+  color: var(--light-color);
+  display: inline-block;
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  background-color: var(--light-grey-color);
+}
+
 .error-length {
   color: var(--game-color);
+}
+
+.main-h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
 }
