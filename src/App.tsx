@@ -1,10 +1,11 @@
 import { useState } from "react";
 import "./App.css";
-import { Copy, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 import { generateStrongPassword } from "./utils/generatePassword";
+import CopyTo from "./components/CopyTo/CopyTo";
 
 function App() {
-  const [passwordLength, setPasswordLength] = useState<number>(1);
+  const [passwordLength, setPasswordLength] = useState<number>(10);
   const [isUppercase, setIsUppercase] = useState<boolean>(false);
   const [isLowercase, setIsLowercase] = useState<boolean>(false);
   const [isNumPassword, setIsNumPassword] = useState<boolean>(false);
@@ -12,10 +13,43 @@ function App() {
   const [isGenerated, setIsGenerated] = useState<boolean>(false);
   const [generatePassword, setGeneratedPassword] = useState<string>("");
 
+  // To handle Copy To Clipboard
+
+  const handleCopy = (password: string): void => {
+    navigator.clipboard.writeText(password);
+    console.log("Copy to clip", password);
+  };
+
+  // To Handle the Range input
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordLength(Number(e.target.value));
   };
 
+  // To validate the form if only one checkbox is checked
+
+  const validateForm = () => {
+    return (
+      passwordLength >= 10 &&
+      (isLowercase || isNumPassword || isSymbol || isUppercase)
+    );
+  };
+
+  // To show the level of difficulty when the user create the password
+  const strengthPassword = () => {
+    let strength = 0;
+    if (passwordLength) strength += 1;
+    if (isUppercase) strength += 1;
+    if (isLowercase) strength += 1;
+    if (isNumPassword) strength += 1;
+    if (isSymbol) strength += 1;
+
+    if (strength <= 1) return "Too Easy";
+    if (strength === 2) return "Easy";
+    if (strength <= 3) return "Medium";
+    return "Strong";
+  };
+
+  // To handle the Submit input
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     const generated = generateStrongPassword({
@@ -35,7 +69,7 @@ function App() {
       {isGenerated && (
         <div className="container-password">
           <p>{generatePassword}</p>
-          <Copy size={15} color="#fff" />
+          <CopyTo handleCopy={() => handleCopy(generatePassword)} />
         </div>
       )}
       <form onSubmit={handleSubmit}>
@@ -82,7 +116,7 @@ function App() {
           />
           Include Symbols
         </label>
-        <button disabled={passwordLength < 10}>GENERATE</button>
+        <button disabled={!validateForm()}>GENERATE</button>
         {passwordLength < 10 && (
           <p className="error-length">A short password is a bad password.</p>
         )}
@@ -90,11 +124,34 @@ function App() {
       <div className="container-strength">
         <p>STRENGTH</p>
         <div className="container-difficulty">
-          <p>MEDIUM</p>
+          <p>{strengthPassword()}</p>
           <div className="container-heart">
-            <Heart size={15} color="#fff" fill="#e60012" />
-            <Heart size={15} color="#fff" fill="#e60012" />
-            <Heart size={15} color="#fff" fill="" />
+            <Heart
+              size={15}
+              color="#fff"
+              fill={
+                strengthPassword() === "Easy" ||
+                strengthPassword() === "Medium" ||
+                strengthPassword() === "Strong"
+                  ? "#e60012"
+                  : ""
+              }
+            />
+            <Heart
+              size={15}
+              color="#fff"
+              fill={
+                strengthPassword() === "Medium" ||
+                strengthPassword() === "Strong"
+                  ? "#e60012"
+                  : ""
+              }
+            />
+            <Heart
+              size={15}
+              color="#fff"
+              fill={strengthPassword() === "Strong" ? "#e60012" : ""}
+            />
           </div>
         </div>
       </div>
